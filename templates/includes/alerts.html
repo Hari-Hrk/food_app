@@ -1,0 +1,11 @@
+{% if messages %}
+    {% for i in messages %}
+        <div class="alert alert-success show-notificatons" role="alert">
+            <button type="button" class="Close"  style="float: right;" data-dismiss="alert" aria-label="Close" >
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <strong>{{i}}</strong>
+           
+        </div>
+    {% endfor %}
+{% endif %}
