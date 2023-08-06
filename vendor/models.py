@@ -12,4 +12,4 @@ class Vendor(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.vendor_name
+        return self.vendor_name 
