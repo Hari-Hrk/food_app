@@ -1,6 +1,7 @@
 from django.contrib import admin
 from . models import User,UserProfile
 from django.contrib.auth.admin import UserAdmin
+#from vendor.models import Vendor
 
 # Register your models here.
 class CustomUserAdmin(UserAdmin):
@@ -12,3 +13,4 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(User,CustomUserAdmin)
 admin.site.register(UserProfile)
+#admin.site.register(Vendor)
