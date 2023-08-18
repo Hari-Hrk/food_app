@@ -28,6 +28,6 @@ urlpatterns = [
     path('cart/',marketplace.cart,name="cart"),
 
     # search api related
-    path('search',marketplace.search,name="search")
+    path('search/',marketplace.search,name="search")
 
 ] + static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
