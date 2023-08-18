@@ -112,13 +112,23 @@
 																{{vendor_form.vendor_name}}
 															</div>
 														</div>
-                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+														<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+															<div class="field-holder">
+																<label>Place</label>
+																{{profile_form.address}}
+																<ul id="suggestions-list"></ul>
+																<div>
+																	<script src="{% static 'js/m.js' %}"></script>
+																</div>
+															</div>
+														</div>																												
+														<!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 															<div class="field-holder" id="map">
 																<label>Address</label>
 																{{profile_form.address}}
                                                                 <small class="text-muted float-right">powered by Google</small>
 															</div>
-														</div>
+														</div> -->
                                                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 															<div class="field-holder">
 																<label>Country</label>
@@ -186,3 +196,12 @@
 {% endblock %}
 
 <!-- { AIzaSyAflKbvhJW_9U1QQY3OZGbRWdjNmcH6OTo }  --->
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	<div class="field-holder">
+		<label>Place</label>
+		{{profile_form.address}}
+	</div>
+</div>
+
+

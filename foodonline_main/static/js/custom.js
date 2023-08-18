@@ -25,6 +25,8 @@ function onPlaceChanged (){
     // get the address components and assign them to the fields
 }
 
+
+
 $(document).ready(function(){
 
     // add to cart

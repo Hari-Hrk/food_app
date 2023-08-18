@@ -21,7 +21,6 @@ def get_vendor(request):
 def vprofile(request):
     profile = get_object_or_404(UserProfile,user=request.user)
     vendor = get_object_or_404(Vendor,user=request.user)
-
     if request.method == "POST":
         profile_form = UserProfileForm(request.POST,request.FILES,instance=profile)
         vendor_form = VendorForm(request.POST,request.FILES,instance=vendor)
