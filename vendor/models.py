@@ -25,14 +25,15 @@ class Vendor(models.Model):
         current_time = now.strftime("%H:%M:%S")
         is_open = None
         for i in current_opening_hour:
-            # start & end gives 24hrs format time or refer python datetime site
-            start = str(datetime.strptime(i.from_hour,"%I:%M %p").time())
-            end = str(datetime.strptime(i.to_hour,"%I:%M %p").time())
-            if current_time > start and current_time < end:
-                is_open = True
-                break
-            else:
-                is_open=False
+            if not i.is_closed:
+                # start & end gives 24hrs format time or refer python datetime site
+                start = str(datetime.strptime(i.from_hour,"%I:%M %p").time())
+                end = str(datetime.strptime(i.to_hour,"%I:%M %p").time())
+                if current_time > start and current_time < end:
+                    is_open = True
+                    break
+                else:
+                    is_open=False
         return is_open
 
     def save(self,*args,**kwargs):
