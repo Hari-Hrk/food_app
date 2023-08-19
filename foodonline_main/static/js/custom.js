@@ -26,7 +26,7 @@ function onPlaceChanged (){
 }
 
 
-
+// document ready start here
 $(document).ready(function(){
 
     // add to cart
@@ -161,7 +161,74 @@ function applyCartAmounts(subtotal,tax,grand_total){
     }
 }
 
+// add hours
+// making ajax request for add hours
+    $('.add_hour').on('click',function(e){
+        e.preventDefault()
+        var day = document.getElementById('id_day').value
+        var from_hour = document.getElementById('id_from_hour').value
+        var to_hour = document.getElementById('id_to_hour').value
+        var is_closed = document.getElementById('id_is_closed').checked
+        var csrf_token = $('input[name=csrfmiddlewaretoken]').val()//this jquery
+        var url = document.getElementById('add_hour_url').value
+        
+
+        if (is_closed) {
+            is_closed = 'True'
+            condition = "day != ''"
+        } else {
+            is_closed = 'False'
+            condition = "from_hour != '' && to_hour != ''"
+        }
+
+        if (eval(condition)) {
+            $.ajax({
+                type : 'POST',
+                url : url,
+                data :{
+                    'day':day,
+                    'from_hour':from_hour,
+                    'to_hour':to_hour,
+                    'is_closed':is_closed,
+                    'csrfmiddlewaretoken':csrf_token
+                },
+                success:function(res){
+                    if (res.status == 'success') {
+                        if (res.is_closed == 'Closed') {
+                            html = `<tr id="hour-${res.id}"><td><b>${res.day}</b></td><td>Closed</td><td><a href="#" class="remove_hour" data-url="/vendor/opening-hours/remove/${res.id}/">Remove</a></td></tr>`
+                        } else {
+                            html = `<tr id="hour-${res.id}"><td><b>${res.day}</b></td><td>${res.from_hour} - ${res.to_hour}</td><td><a href="#" class="remove_hour" data-url="/vendor/opening-hours/remove/${res.id}/">Remove</a></td></tr>` 
+                        }
+                        $('.opening_hours').append(html)
+                        document.getElementById('opening_hours').reset()
+                    }
+                    else{
+                        swal(res.message,'','error')
+                    }
+                }
+            })
+        } else {
+            swal('fill all the fields','','info');
+        }
+
+    })
+
+// REMOVE HOURS
+    $(document).on('click','.remove_hour',function(e){
+        e.preventDefault()
+        url = $(this).attr('data-url');
+        console.log('url is ===> ',url);
+        $.ajax({
+            type:'GET',
+            url:url,
+            success:function(res){
+                if (res.status == 'success') {
+                    document.getElementById('hour-'+res.id).remove()
+                }
+            }
+        })
+    })
 
 })
-
+// document ready end here
 
