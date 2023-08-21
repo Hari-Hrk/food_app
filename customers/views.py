@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from accounts.forms import UserProfileForm,UserInfoForm
 from accounts.models import UserProfile
 from django.contrib import messages
+from orders.models import Order,OrderedFood
 
 # Create your views here.
 @login_required(login_url='login')
@@ -30,3 +31,28 @@ def cprofile(request):
         'profile' : profile
     }
     return render(request,'customers/cprofile.html',context)
+
+
+
+def my_orders(request):
+    orders = Order.objects.filter(user=request.user,is_ordered=True).order_by('-created_at')
+    context = {
+        'orders':orders
+    }
+    return render(request,'customers/my_orders.html',context)
+
+
+def order_detail(request,order_number):
+    try:
+        order = Order.objects.get(order_number=order_number,is_ordered= True)
+        order_food = OrderedFood.objects.filter(order)
+        context = {
+            'orders':order,
+            'order_food':order_food
+        }
+        return render(request,'customers/order_detail.html',context)
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return redirect('customer')
+
+    #return render(request,'customers/order_detail.html')
