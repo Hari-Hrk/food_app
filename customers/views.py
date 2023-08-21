@@ -4,6 +4,7 @@ from accounts.forms import UserProfileForm,UserInfoForm
 from accounts.models import UserProfile
 from django.contrib import messages
 from orders.models import Order,OrderedFood
+import json
 
 # Create your views here.
 @login_required(login_url='login')
@@ -42,17 +43,37 @@ def my_orders(request):
     return render(request,'customers/my_orders.html',context)
 
 
+# def order_detail(request,order_number):
+#     try:
+#         order = Order.objects.get(order_number=order_number,is_ordered= True)
+#         order_food = OrderedFood.objects.filter(order)
+#         context = {
+#             'orders':order,
+#             'order_food':order_food
+#         }
+#         #return render(request,'customers/order_detail.html',context)
+#     except Exception as e:
+#         print(f"An error occurred: {e}")
+#         return redirect('customer')
+#     return render(request,'customers/order_detail.html',context)
+
 def order_detail(request,order_number):
     try:
-        order = Order.objects.get(order_number=order_number,is_ordered= True)
-        order_food = OrderedFood.objects.filter(order)
+        order = Order.objects.get(order_number = order_number,is_ordered=True)
+        ordered_food = OrderedFood.objects.filter(order=order)
+
+        subtotal = 0
+        for item in ordered_food:
+            subtotal += (item.price * item.quantity)
+        tax_data = json.loads(order.tax_data)
+
         context = {
-            'orders':order,
-            'order_food':order_food
+            'order' : order,
+            'ordered_food' : ordered_food,
+            'subtotal' : subtotal,
+            'tax_data' : tax_data
         }
-        return render(request,'customers/order_detail.html',context)
-    except Exception as e:
-        print(f"An error occurred: {e}")
+    except:
         return redirect('customer')
 
-    #return render(request,'customers/order_detail.html')
+    return render(request,'customers/order_detail.html',context)
